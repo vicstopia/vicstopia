@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoFlux - Premium Robux & Crypto</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff006e;
+            --secondary: #8338ec;
+            --accent: #fb5607;
+            --dark: #0a0e27;
+            --light: #ffffff;
+            --pink: #ff6b9d;
+            --purple: #c66ef1;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            background: #0a0e27;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Full Screen Background Section - Fits new image properly */
+        .header-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            background-size: cover; /* Cover for full screen fitting */
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #e8f1f8; /* Light blue-gray to match the new image */
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 60px;
+            background: rgba(10, 14, 39, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 20px 60px;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logo {
+            height: 60px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) brightness(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover img {
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.5)) brightness(1.2);
+            transform: scale(1.03);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #fb5607);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 3s ease infinite;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
+            display: none;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            font-family: 'Space Grotesk', sans-serif;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--light);
+            transform: translateY(-1px);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Hero Section with Logo Grid - Moved much further down for scroll effect */
+        .hero {
+            padding: 100px 50px 100px; /* Reduced top padding */
+            text-align: center;
+            position: relative;
+            min-height: 90vh; /* Increased height to push logos down further */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Keep logos at bottom */
+            align-items: center;
+            padding-bottom: 100px; /* Space from bottom */
+            margin-top: 50vh; /* Push entire section down by full viewport height */
+        }
+
+        /* Logo Grid Section */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .logo-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: none; /* Removed the white border */
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .logo-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(131, 56, 236, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .logo-item:hover::before {
+            opacity: 1;
+        }
+
+        .logo-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 0, 110, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 0, 110, 0.3);
+        }
+
+        .logo-item img {
+            max-width: 180px;
+            max-height: 120px;
+            width: auto;
+            height: auto;
+            filter: brightness(0.9) contrast(1.1);
+            transition: all 0.4s ease;
+        }
+
+        .logo-item:hover img {
+            filter: brightness(1.1) contrast(1.2) drop-shadow(0 0 20px rgba(255, 0, 110, 0.5));
+            transform: scale(1.1);
+        }
+
+        .logo-placeholder {
+            font-family: 'Orbitron', monospace;
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff006e, #8338ec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Features Section - More Transparent */
+        .features {
+            padding: 100px 50px;
+            background: rgba(10, 14, 39, 0.3); /* Much more transparent */
+            backdrop-filter: blur(5px); /* Less blur for more transparency */
+            position: relative;
+            z-index: 1;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02); /* More transparent cards */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #fb5607);
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.7;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff006e, #8338ec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-title {
+            font-size: 24px;
+            color: var(--light);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .feature-desc {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Footer Section */
+        .footer {
+            background: #000;
+            padding: 60px 50px 30px;
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: var(--light);
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--pink);
+            transform: translateX(5px);
+            display: inline-block;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .newsletter-input {
+            background: rgba(255, 182, 193, 0.2);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 182, 193, 0.6);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--pink);
+            background: rgba(255, 182, 193, 0.3);
+        }
+
+        .newsletter-btn {
+            background: linear-gradient(45deg, #ff6b9d, #c66ef1);
+            color: var(--light);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 157, 0.4);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .social-links a:hover {
+            color: var(--pink);
+            transform: translateY(-3px) scale(1.2);
+        }
+
+        .footer-logo {
+            width: 150px;
+            height: auto;
+            filter: brightness(0.9);
+            margin-bottom: 20px;
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--pink);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 20px 25px;
+            }
+
+            .navbar.scrolled {
+                padding: 15px 25px;
+            }
+
+            .logo {
+                height: 45px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-links a {
+                font-size: 13px;
+            }
+
+            .logo-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .hero {
+                padding-bottom: 80px; /* Adjust for mobile */
+                margin-top: 80vh; /* Less margin on mobile */
+                min-height: 120vh; /* Adjusted height for mobile */
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Sparkle Animation */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            animation: sparkle 1s linear;
+            z-index: 9999;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-40px) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Full Screen Background Section -->
+    <div class="header-background" id="headerBg" style="background-image: url('img/Biege\ and\ Red\ Dreamy\ Cloud\ Y2K\ Christmas\ Celebration\ Presentation\ \(1\).png');">
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="img/VICKY-removebg-preview.png" alt="vicky" onerror="this.style.display='none'; document.getElementById('logoText').style.display='block';">
+                <span id="logoText" class="logo-text">vicky</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="discord.html">Discord</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Logo Grid -->
+    <section class="hero">
+        <div class="logo-grid">
+            <!-- Logo 1 - Links to Shop -->
+            <a href="shop.html" class="logo-item">
+                <img src="img/shop.png" alt="Shop" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-placeholder\'>SHOP</div>';">
+            </a>
+            
+            <!-- Logo 2 - Links to Discord -->
+            <a href="discord.html" class="logo-item">
+                <img src="img/discord.png" alt="Discord" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-placeholder\'>DISCORD</div>';">
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section - Now More Transparent -->
+    <section class="features">
+        <div class="features-container">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Instant Delivery</h3>
+                <p class="feature-desc">Get your Robux and crypto delivered instantly after purchase. No waiting, no delays.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Secure Transactions</h3>
+                <p class="feature-desc">All transactions are encrypted and secure. Your safety is our top priority.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <h3 class="feature-title">Best Prices</h3>
+                <p class="feature-desc">Competitive rates on all digital assets. Get more value for your money.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <!-- Footer Column 1 -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="collections.html">Collections</a></li>
+                    <li><a href="last-chance.html">Last Chance</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer Column 2 - Newsletter -->
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+
+            <!-- Footer Column 3 - Social -->
+            <div class="footer-section">
+                <h3>Follow</h3>
+                <div class="social-links">
+                    <a href="#" title="YouTube">📺</a>
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="TikTok">🎵</a>
+                    <a href="#" title="Twitter">🐦</a>
+                </div>
+                <img src="img/VICKY-removebg-preview.png" alt="Vicky Logo" class="footer-logo" onerror="this.style.display='none';">
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>© 2025 CryptoFlux. Powered By Innovation</p>
+            <div class="footer-bottom-links">
+                <a href="#">Help Center</a>
+                <a href="#">Sizing Charts</a>
+                <a href="#">Terms Of Service</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Sparkle cursor effect
+        document.addEventListener('mousemove', function(e) {
+            if (Math.random() > 0.95) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.innerHTML = '✨';
+                sparkle.style.left = e.pageX + 'px';
+                sparkle.style.top = e.pageY + 'px';
+                sparkle.style.fontSize = Math.random() * 20 + 10 + 'px';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1000);
+            }
+        });
+
+        // Logo hover animation
+        document.querySelectorAll('.logo-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.5s ease';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.animation = 'none';
+            });
+        });
+
+        // Newsletter form submission
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for subscribing!');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -60,6 +60,33 @@
             z-index: -1;
         }
 
+        /* Mobile-specific background adjustments */
+        @media (max-width: 768px) {
+            .header-background {
+                background-size: contain;
+                background-position: center top;
+                background-repeat: no-repeat;
+                opacity: 0.6; /* More visible on mobile */
+                background-attachment: scroll; /* Better performance on mobile */
+            }
+            
+            .dark-overlay {
+                background: rgba(0, 0, 0, 0.5); /* Less dark on mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-background {
+                background-size: cover;
+                background-position: center center;
+                opacity: 0.7; /* Even more visible on small phones */
+            }
+            
+            .dark-overlay {
+                background: rgba(0, 0, 0, 0.4); /* Even less dark on small phones */
+            }
+        }
+
         /* Navbar Styles */
         .navbar {
             position: fixed;

@@ -49,6 +49,24 @@
             /* Removed brightness and contrast filters */
         }
 
+        /* Mobile-specific background adjustments */
+        @media (max-width: 768px) {
+            .header-background {
+                background-size: contain;
+                background-position: center top;
+                background-repeat: no-repeat;
+                opacity: 0.4; /* Make background more visible on mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-background {
+                background-size: cover;
+                background-position: center center;
+                opacity: 0.5; /* Even more visible on small phones */
+            }
+        }
+
         /* Removed Gold Overlay Effect completely */
         .header-background::after {
             display: none;

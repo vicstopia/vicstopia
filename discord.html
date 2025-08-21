@@ -34,7 +34,7 @@
             position: relative;
         }
 
-        /* Full Screen Background Section with Black Overlay */
+         /* Full Screen Background Section with Black Overlay */
         .header-background {
             position: fixed;
             top: 0;
@@ -59,6 +59,32 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7); /* Black with 70% opacity */
             z-index: 1;
+        }
+
+        /* Mobile-specific background adjustments */
+        @media (max-width: 768px) {
+            .header-background {
+                background-size: contain;
+                background-position: center top;
+                background-repeat: no-repeat;
+                opacity: 0.8; /* Make background more visible on mobile */
+            }
+            
+            .header-background::after {
+                background: rgba(0, 0, 0, 0.5); /* Less dark overlay on mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-background {
+                background-size: cover;
+                background-position: center center;
+                opacity: 0.9; /* Even more visible on small phones */
+            }
+            
+            .header-background::after {
+                background: rgba(0, 0, 0, 0.4); /* Even less dark overlay on small phones */
+            }
         }
 
         /* Navbar Styles - Made more transparent */

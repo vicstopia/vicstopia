@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop - CryptoFlux Premium Services</title>
+    <title>Vicky's Shop - Premium Services</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;700&display=swap');
         
@@ -33,7 +33,7 @@
             position: relative;
         }
 
-        /* Full Screen Background Section - CLEARED */
+        /* Full Screen Background Section - Updated with low opacity */
         .header-background {
             position: fixed;
             top: 0;
@@ -46,9 +46,21 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-color: var(--black);
+            opacity: 0.3; /* Low opacity as requested */
         }
 
-        /* Navbar Styles - Made more transparent */
+        /* Dark overlay for better readability */
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        /* Navbar Styles */
         .navbar {
             position: fixed;
             top: 0;
@@ -165,41 +177,40 @@
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
         }
 
-        /* Shop Header - Updated positioning */
-        .shop-header {
-            padding: 100px 50px 50px;
-            text-align: center;
+        /* Hero Section - Image Only Banner */
+        .hero-section {
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+            margin-top: 120px;
             position: relative;
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 100px;
-            margin-top: 50vh;
+            overflow: hidden;
+            border-bottom: 3px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .shop-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 60px;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--gold), var(--gold-accent), var(--gold-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-            margin-bottom: 20px;
-            animation: goldShimmer 3s ease infinite;
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.8);
+            transition: all 0.5s ease;
         }
 
-        .shop-subtitle {
-            font-size: 20px;
-            color: rgba(255, 215, 0, 0.9);
-            max-width: 600px;
-            margin: 0 auto;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        .hero-section:hover .hero-image {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: none;
         }
 
         /* Category Tabs */
@@ -211,6 +222,7 @@
             padding: 0 20px;
             position: relative;
             z-index: 1;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -308,22 +320,36 @@
             letter-spacing: 1px;
         }
 
-        .product-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            border-radius: 20px;
+        /* Updated Product Image Styles */
+        .product-image {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
-            margin-bottom: 20px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             transition: all 0.3s ease;
         }
 
-        .product-card:hover .product-icon {
-            transform: rotate(10deg) scale(1.1);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+        .product-card:hover .product-image {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+            border-color: var(--gold);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
         }
 
         .product-name {
@@ -371,7 +397,7 @@
             font-weight: bold;
         }
 
-        .buy-btn {
+        .buy-btn, .group-btn {
             width: 100%;
             padding: 15px;
             background: linear-gradient(45deg, var(--gold), var(--gold-accent));
@@ -386,9 +412,13 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 10px;
         }
 
-        .buy-btn::before {
+        .buy-btn::before, .group-btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -399,15 +429,96 @@
             transition: left 0.5s ease;
         }
 
-        .buy-btn:hover::before {
+        .buy-btn:hover::before, .group-btn:hover::before {
             left: 100%;
         }
 
-        .buy-btn:hover {
+        .buy-btn:hover, .group-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
             background: linear-gradient(45deg, var(--gold-accent), var(--gold));
         }
+
+        .group-btn {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.8), rgba(255, 237, 78, 0.8));
+        }
+
+        .warning-text {
+            font-size: 12px;
+            color: rgba(255, 215, 0, 0.6);
+            font-style: italic;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .fee-table {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .fee-table h4 {
+            color: var(--gold);
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            color: rgba(255, 215, 0, 0.8);
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .fee-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Image Hero Section */
+        .image-hero {
+            padding: 80px 50px;
+             margin-top: 140px; /* Added margin to push below navbar */
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* First image hero doesn't need margin since hero-section is above it */
+        .hero-section + .image-hero {
+            margin-top: 0;
+        }
+
+        .image-hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .hero-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Responsive for Image Hero */
+        @media (max-width: 768px) {
+            .image-hero {
+                padding: 60px 25px;
+            }
+        }
+
 
         /* Footer Section */
         .footer {
@@ -422,9 +533,10 @@
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            gap: 60px;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
             margin-bottom: 40px;
+            align-items: start;
         }
 
         .footer-section h3 {
@@ -458,93 +570,55 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
-        .newsletter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .newsletter-input {
-            background: rgba(255, 215, 0, 0.1);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            color: var(--gold);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .newsletter-input::placeholder {
-            color: rgba(255, 215, 0, 0.6);
-        }
-
-        .newsletter-input:focus {
-            outline: none;
-            border-color: var(--gold);
-            background: rgba(255, 215, 0, 0.15);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-        }
-
-        .newsletter-btn {
-            background: linear-gradient(45deg, var(--gold), var(--gold-accent));
-            color: var(--black);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .newsletter-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .newsletter-btn:hover::before {
-            left: 100%;
-        }
-
-        .newsletter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
-            background: linear-gradient(45deg, var(--gold-accent), var(--gold));
-        }
-
         .social-links {
             display: flex;
             gap: 20px;
+            margin-bottom: 20px;
         }
 
         .social-links a {
             color: rgba(255, 215, 0, 0.8);
             font-size: 24px;
             transition: all 0.3s ease;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            text-decoration: none;
+            background: rgba(255, 215, 0, 0.1);
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .social-links a img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+            filter: brightness(1.2) invert(0.8) sepia(1) saturate(3) hue-rotate(45deg);
+            transition: all 0.3s ease;
         }
 
         .social-links a:hover {
-            color: var(--gold);
-            transform: translateY(-3px) scale(1.2);
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+            color: var(--black);
+            background: var(--gold);
+            border-color: var(--gold);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+            text-shadow: none;
+        }
+
+        .social-links a:hover img {
+            filter: brightness(1) invert(1) contrast(1.2);
+            transform: scale(1.1);
         }
 
         .footer-logo {
             width: 150px;
             height: auto;
             filter: brightness(1) drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
-            margin-bottom: 20px;
             transition: all 0.3s ease;
         }
 
@@ -608,14 +682,10 @@
                 font-size: 13px;
             }
 
-            .shop-header {
-                padding-bottom: 80px;
-                margin-top: 40vh;
-                min-height: 80vh;
-            }
-
-            .shop-title {
-                font-size: 40px;
+            .hero-section {
+                margin-top: 100px;
+                height: 40vh;
+                min-height: 250px;
             }
 
             .category-tabs {
@@ -642,32 +712,7 @@
             }
         }
 
-        /* Gold Sparkle Animation */
-        .sparkle {
-            position: fixed;
-            pointer-events: none;
-            animation: goldSparkle 1s linear;
-            z-index: 9999;
-            color: var(--gold);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-        }
-
-        @keyframes goldSparkle {
-            0% {
-                transform: translateY(0) scale(0) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-20px) scale(1) rotate(180deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-40px) scale(0) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* Particle Effect */
+        /* Particles */
         .particles {
             position: fixed;
             top: 0;
@@ -704,25 +749,29 @@
             }
         }
 
-        /* Additional Premium Gold Effects */
-        @keyframes shimmer {
-            0% {
-                background-position: -200% center;
-            }
-            100% {
-                background-position: 200% center;
-            }
+        /* Gold Sparkle Animation */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            animation: goldSparkle 1s linear;
+            z-index: 9999;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
 
-        .gold-shimmer {
-            background: linear-gradient(90deg, 
-                var(--gold) 0%, 
-                var(--gold-light) 25%, 
-                var(--gold) 50%, 
-                var(--gold-light) 75%, 
-                var(--gold) 100%);
-            background-size: 200% auto;
-            animation: shimmer 3s linear infinite;
+        @keyframes goldSparkle {
+            0% {
+                transform: translateY(0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) scale(1) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-40px) scale(0) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -730,15 +779,18 @@
     <!-- Particles Background -->
     <div class="particles" id="particles"></div>
 
-    <!-- Full Screen Background Section -->
+    <!-- Full Screen Background Section with Low Opacity -->
     <div class="header-background" id="headerBg" style="background-image: url('img/VICKY\ \(1\).png');">
     </div>
+    
+    <!-- Dark Overlay for better readability -->
+    <div class="dark-overlay"></div>
 
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <img src="img/Vickylogo.png" alt="vicky" onerror="this.style.display='none'; document.getElementById('logoText').style.display='block';">
+                <img src="img/nav logo.png" alt="vicky" onerror="this.style.display='none'; document.getElementById('logoText').style.display='block';">
                 <span id="logoText" class="logo-text">vicky</span>
             </a>
             <ul class="nav-links">
@@ -749,17 +801,19 @@
         </div>
     </nav>
 
-    <!-- Shop Header -->
-    <div class="shop-header">
-        <h1 class="shop-title">Premium Shop</h1>
-        <p class="shop-subtitle">Choose from our selection of high-quality digital assets and services</p>
-    </div>
+    <!-- Image Hero Section -->
+    <section class="image-hero">
+        <div class="image-hero-container">
+            <img src="img/vistopia.png" alt="Ready to Shop" class="hero-image">
+        </div>
+    </section>
 
     <!-- Category Tabs -->
     <div class="category-tabs">
         <button class="tab-btn active" onclick="filterProducts('all')">All Products</button>
         <button class="tab-btn" onclick="filterProducts('robux')">Robux</button>
-        <button class="tab-btn" onclick="filterProducts('crypto')">Crypto</button>
+        <button class="tab-btn" onclick="filterProducts('exchange')">Exchange</button>
+        <button class="tab-btn" onclick="filterProducts('seller')">Seller Slots</button>
     </div>
 
     <!-- Products Section -->
@@ -767,127 +821,217 @@
         <div class="products-grid">
             <!-- Robux Products -->
             <div class="product-card" data-category="robux">
-                <span class="product-badge">Popular</span>
-                <div class="product-icon">💎</div>
-                <h3 class="product-name">Robux Starter Pack</h3>
-                <p class="product-desc">Perfect for beginners looking to enhance their gaming experience</p>
-                <div class="product-price">$9.99</div>
+                <span class="product-badge">With Taxes</span>
+                <div class="product-image">
+                    <img src="img/star.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Robux With Taxes</h3>
+                <p class="product-desc">Official method through Roblox platform with taxes included</p>
+                <div class="product-price">RM27/1K</div>
                 <ul class="product-features">
-                    <li>1,000 Robux</li>
-                    <li>Instant Delivery</li>
-                    <li>24/7 Support</li>
+                    <li>Safe & Secure</li>
+                    <li>Official Method</li>
+                    <li>No Risk of Ban</li>
+                    <li>Slow Process (No ETA)</li>
+                </ul>
+                <p class="warning-text">⚠️ Expected slow process as stock takes time</p>
+                <button class="buy-btn" onclick="contactForPurchase()">Contact to Purchase</button>
+            </div>
+
+            <div class="product-card" data-category="robux">
+                <span class="product-badge">Fast Delivery</span>
+                <div class="product-image">
+                    <img src="img/ribbon.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">In-Game Gifting</h3>
+                <p class="product-desc">Quick delivery through in-game gifting system</p>
+                <div class="product-price">RM23/1K</div>
+                <ul class="product-features">
+                    <li>Fastest Method</li>
+                    <li>Direct Transfer</li>
+                    <li>No Waiting Time</li>
+                    <li>Best Price</li>
+                </ul>
+                <button class="buy-btn" onclick="contactForPurchase()">Contact to Purchase</button>
+            </div>
+
+            <div class="product-card" data-category="robux">
+                <span class="product-badge">Group Funds</span>
+                <div class="product-image">
+                    <img src="img/gummy bear.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Group Funds Transfer</h3>
+                <p class="product-desc">Receive Robux through our official group funds</p>
+                <div class="product-price">RM27/1K</div>
+                <ul class="product-features">
+                    <li>Reliable Method</li>
+                    <li>Multiple Groups Available</li>
+                    <li>Join & Receive</li>
+                    <li>Secure Transfer</li>
+                </ul>
+                <a href="https://www.roblox.com/communities/35679063/McRonalds-LLC#!/about" target="_blank" class="group-btn">Join McRonalds LLC</a>
+                <a href="https://www.roblox.com/communities/33525694/chewmarks#!/about" target="_blank" class="group-btn">Join Chewmarks</a>
+                <a href="https://www.roblox.com/communities/34646526/fwrball#!/about" target="_blank" class="group-btn">Join Fwrball</a>
+            </div>
+
+            <!-- Exchange Products -->
+            <div class="product-card" data-category="exchange">
+                <span class="product-badge">100+ Cryptos</span>
+                <div class="product-image">
+                    <img src="img/angel cupid.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Bitcoin Exchange</h3>
+                <p class="product-desc">Convert your currency to Bitcoin at competitive rates</p>
+                <div class="product-price">Rate: 4.7</div>
+                <ul class="product-features">
+                    <li>Based on USDT Rate</li>
+                    <li>Real-time Pricing</li>
                     <li>Secure Transaction</li>
+                    <li>Fast Processing</li>
                 </ul>
-                <button class="buy-btn">Purchase Now</button>
+                <button class="buy-btn" onclick="contactForExchange()">DM for Rate & Info</button>
             </div>
 
-            <div class="product-card" data-category="robux">
-                <span class="product-badge">Best Value</span>
-                <div class="product-icon">👑</div>
-                <h3 class="product-name">Robux Premium</h3>
-                <p class="product-desc">Our most popular package with maximum value</p>
-                <div class="product-price">$49.99</div>
+            <div class="product-card" data-category="exchange">
+                <span class="product-badge">Popular</span>
+                <div class="product-image">
+                    <img src="img/duck.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Ethereum Exchange</h3>
+                <p class="product-desc">Quick ETH conversion with best market rates</p>
+                <div class="product-price">Rate: 4.7</div>
                 <ul class="product-features">
-                    <li>10,000 Robux</li>
-                    <li>Bonus 500 Robux</li>
-                    <li>Priority Support</li>
-                    <li>Loyalty Rewards</li>
-                </ul>
-                <button class="buy-btn">Purchase Now</button>
-            </div>
-
-            <div class="product-card" data-category="robux">
-                <div class="product-icon">🚀</div>
-                <h3 class="product-name">Robux Ultimate</h3>
-                <p class="product-desc">For serious gamers who want it all</p>
-                <div class="product-price">$99.99</div>
-                <ul class="product-features">
-                    <li>25,000 Robux</li>
-                    <li>Bonus 2,500 Robux</li>
-                    <li>VIP Support</li>
-                    <li>Exclusive Deals</li>
-                </ul>
-                <button class="buy-btn">Purchase Now</button>
-            </div>
-
-            <!-- Crypto Products -->
-            <div class="product-card" data-category="crypto">
-                <span class="product-badge">Hot</span>
-                <div class="product-icon">₿</div>
-                <h3 class="product-name">Bitcoin Package</h3>
-                <p class="product-desc">Start your crypto journey with Bitcoin</p>
-                <div class="product-price">$50.00</div>
-                <ul class="product-features">
-                    <li>Market Rate BTC</li>
                     <li>Low Fees</li>
-                    <li>Secure Wallet</li>
-                    <li>Price Guarantee</li>
-                </ul>
-                <button class="buy-btn">Purchase Now</button>
-            </div>
-
-            <div class="product-card" data-category="crypto">
-                <div class="product-icon">💰</div>
-                <h3 class="product-name">Ethereum Bundle</h3>
-                <p class="product-desc">Get started with ETH at competitive rates</p>
-                <div class="product-price">$75.00</div>
-                <ul class="product-features">
-                    <li>Market Rate ETH</li>
-                    <li>Gas Fees Included</li>
                     <li>Instant Transfer</li>
-                    <li>Portfolio Tracking</li>
+                    <li>USDT Based</li>
+                    <li>24/7 Available</li>
                 </ul>
-                <button class="buy-btn">Purchase Now</button>
+                <button class="buy-btn" onclick="contactForExchange()">DM for Rate & Info</button>
             </div>
 
-            <div class="product-card" data-category="crypto">
-                <span class="product-badge">New</span>
-                <div class="product-icon">🌟</div>
-                <h3 class="product-name">Altcoin Mix</h3>
-                <p class="product-desc">Diversified portfolio of top altcoins</p>
-                <div class="product-price">$100.00</div>
+            <div class="product-card" data-category="exchange">
+                <span class="product-badge">All Cryptos</span>
+                <div class="product-image">
+                    <img src="img/flower.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Custom Crypto Exchange</h3>
+                <p class="product-desc">Exchange service for 100+ types of cryptocurrencies</p>
+                <div class="product-price">Today's Rate: 4.7</div>
                 <ul class="product-features">
-                    <li>5 Different Coins</li>
-                    <li>Expert Selection</li>
-                    <li>Monthly Updates</li>
-                    <li>Risk Management</li>
+                    <li>100+ Cryptocurrencies</li>
+                    <li>Custom Requests</li>
+                    <li>USDT Conversion</li>
+                    <li>Professional Service</li>
                 </ul>
-                <button class="buy-btn">Purchase Now</button>
+                <p class="warning-text">⚠️ Please come with questions or requests will be ignored</p>
+                <button class="buy-btn" onclick="contactForExchange()">DM for Custom Exchange</button>
+            </div>
+
+            <!-- Seller Slot Products -->
+            <div class="product-card" data-category="seller">
+                <span class="product-badge">Limited - 8 Slots</span>
+                <div class="product-image">
+                    <img src="img/star.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Weekly Seller Pass</h3>
+                <p class="product-desc">Secure your seller slot in Vicstopia for one week</p>
+                <div class="product-price">RM20/Week</div>
+                <ul class="product-features">
+                    <li>7 Days Access</li>
+                    <li>Receive Orders in Vicstopia</li>
+                    <li>First Come, First Served</li>
+                    <li>Sell Any Items (Except Robux/Crypto)</li>
+                </ul>
+                <p class="warning-text">⚠️ No advertising allowed. Orders only within Vicstopia, not in DMs</p>
+                <button class="buy-btn" onclick="contactForSellerSlot()">Book Weekly Slot</button>
+            </div>
+
+            <div class="product-card" data-category="seller">
+                <span class="product-badge">Best Value</span>
+                <div class="product-image">
+                    <img src="img/ribbon.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Monthly Seller Pass</h3>
+                <p class="product-desc">Get a full month access to sell in Vicstopia</p>
+                <div class="product-price">RM50/Month</div>
+                <ul class="product-features">
+                    <li>30 Days Access</li>
+                    <li>Includes 1 Free @here Ping</li>
+                    <li>Priority Slot Booking</li>
+                    <li>Sell Any Items (Except Robux/Crypto)</li>
+                </ul>
+                <p class="warning-text">⚠️ No advertising allowed. Orders only within Vicstopia, not in DMs</p>
+                <button class="buy-btn" onclick="contactForSellerSlot()">Book Monthly Slot</button>
+            </div>
+
+            <div class="product-card" data-category="seller">
+                <span class="product-badge">Ping Bundle</span>
+                <div class="product-image">
+                    <img src="img/gummy bear.png" alt="Product Logo">
+                </div>
+                <h3 class="product-name">Ping Packages</h3>
+                <p class="product-desc">Get attention for your items with ping notifications</p>
+                <div class="product-price">From RM2</div>
+                <ul class="product-features">
+                    <li>@here: RM2 per use</li>
+                    <li>@everyone: RM5 per use</li>
+                    <li>Bundle: 2x @here & 2x @everyone for RM12</li>
+                    <li>Instant Visibility</li>
+                </ul>
+                <div class="fee-table">
+                    <h4>MM Fee System:</h4>
+                    <div class="fee-row">
+                        <span>Below RM50</span>
+                        <span>1%</span>
+                    </div>
+                    <div class="fee-row">
+                        <span>RM50 - RM200</span>
+                        <span>3%</span>
+                    </div>
+                    <div class="fee-row">
+                        <span>Above RM200</span>
+                        <span>5%</span>
+                    </div>
+                </div>
+                <button class="buy-btn" onclick="contactForSellerSlot()">Get Ping Package</button>
             </div>
         </div>
     </section>
 
+   <!-- Image Hero Section -->
+    <section class="image-hero">
+        <div class="image-hero-container">
+            <img src="img/bunny.png" alt="Ready to Shop" class="hero-image">
+        </div>
+    </section>
+
+
     <!-- Footer Section -->
     <footer class="footer">
         <div class="footer-content">
-            <!-- Footer Column 1 -->
+            <!-- Footer Column 1 - Quick Links -->
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="shop.html">Shop</a></li>
-                    <li><a href="collections.html">Collections</a></li>
-                    <li><a href="last-chance.html">Last Chance</a></li>
+                    <li><a href="discord.html">Discord</a></li>
                 </ul>
             </div>
 
-            <!-- Footer Column 2 - Newsletter -->
+            <!-- Footer Column 2 - Social & Logo -->
             <div class="footer-section">
-                <h3>Newsletter</h3>
-                <form class="newsletter-form">
-                    <input type="email" class="newsletter-input" placeholder="Your email" required>
-                    <button type="submit" class="newsletter-btn">Subscribe</button>
-                </form>
-            </div>
-
-            <!-- Footer Column 3 - Social -->
-            <div class="footer-section">
-                <h3>Follow</h3>
+                <h3>Follow Us</h3>
                 <div class="social-links">
-                    <a href="#" title="YouTube">📺</a>
-                    <a href="#" title="Instagram">📷</a>
-                    <a href="#" title="TikTok">🎵</a>
-                    <a href="#" title="Twitter">🐦</a>
+                    <a href="https://www.instagram.com/xxvickyy/" target="_blank" title="Instagram">
+                        <img src="img/mdi--instagram.png" alt="Instagram" onerror="this.outerHTML='📷';">
+                    </a>
+                    <a href="https://www.facebook.com/xxvickyy" target="_blank" title="Facebook">
+                        <img src="img/ic--baseline-facebook.png" alt="Facebook" onerror="this.outerHTML='📘';">
+                    </a>
+                    <a href="https://discord.gg/zCVbGzXR" target="_blank" title="Discord">
+                        <img src="img/ic--baseline-discord.png" alt="Discord" onerror="this.outerHTML='💬';">
+                    </a>
                 </div>
                 <img src="img/Vickylogo.png" alt="Vicky Logo" class="footer-logo" onerror="this.style.display='none';">
             </div>
@@ -895,10 +1039,8 @@
 
         <!-- Footer Bottom -->
         <div class="footer-bottom">
-            <p>© 2025 CryptoFlux. Powered By Innovation</p>
+            <p>© 2025 Vicky's Shop. All Rights Reserved</p>
             <div class="footer-bottom-links">
-                <a href="#">Help Center</a>
-                <a href="#">Sizing Charts</a>
                 <a href="#">Terms Of Service</a>
                 <a href="#">Privacy Policy</a>
             </div>
@@ -942,7 +1084,8 @@
             tabs.forEach(tab => {
                 tab.classList.remove('active');
                 if (tab.textContent.toLowerCase().includes(category) || 
-                    (category === 'all' && tab.textContent === 'All Products')) {
+                    (category === 'all' && tab.textContent === 'All Products') ||
+                    (category === 'seller' && tab.textContent === 'Seller Slots')) {
                     tab.classList.add('active');
                 }
             });
@@ -956,6 +1099,22 @@
                     product.style.display = 'none';
                 }
             });
+        }
+
+        // Contact functions
+        function contactForPurchase() {
+            // Replace with your actual contact method
+            window.open('https://discord.gg/zCVbGzXR', '_blank');
+        }
+
+        function contactForExchange() {
+            // Replace with your actual contact method
+            window.open('https://discord.gg/zCVbGzXR', '_blank');
+        }
+
+        function contactForSellerSlot() {
+            // Replace with your actual contact method
+            window.open('https://discord.gg/zCVbGzXR', '_blank');
         }
 
         // Create particles
@@ -986,33 +1145,6 @@
             }
         `;
         document.head.appendChild(style);
-
-        // Newsletter form submission with gold flash
-        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const button = this.querySelector('.newsletter-btn');
-            button.style.background = 'linear-gradient(45deg, #FFD700, #FFF8DC)';
-            button.innerHTML = '✓ Subscribed!';
-            setTimeout(() => {
-                button.style.background = 'linear-gradient(45deg, var(--gold), var(--gold-accent))';
-                button.innerHTML = 'Subscribe';
-                this.reset();
-            }, 2000);
-        });
-
-        // Add golden glow effect on scroll
-        let lastScrollTop = 0;
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop) {
-                // Scrolling down
-                document.body.style.boxShadow = 'inset 0 0 100px rgba(255, 215, 0, 0.05)';
-            } else {
-                // Scrolling up
-                document.body.style.boxShadow = 'inset 0 0 50px rgba(255, 215, 0, 0.02)';
-            }
-            lastScrollTop = scrollTop;
-        });
     </script>
 </body>
 </html>
